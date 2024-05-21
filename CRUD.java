@@ -125,35 +125,39 @@ public class CRUD {
         JButton botonAgregar = new JButton("Agregar Libro");
         botonAgregar.setBounds(20, 300, 160, 30);
         panel.add(botonAgregar);
-        botonAgregar.addActionListener(new ActionListener(){
+        botonAgregar.addActionListener(event -> {
+            String titulo = titleField.getText();
+            String anio = yearField.getText();
+            String numIdentificacion = numField.getText();
+            String genero = genField.getText();
+            String autor = autorField.getText();
+            String numPaginas = pagField.getText();
+            String numCapitulos = capField.getText();
+            elementos.add(new Libro(titulo, anio, numIdentificacion, genero, autor, numPaginas, numCapitulos));
+            try(BufferedWriter writer = new BufferedWriter(new FileWriter("libros.txt", true))){
+                writer.write("Título: " + titulo + "\n");
+                writer.write("Año de publicación: " + anio + "\n");
+                writer.write("Número de identificación: " + numIdentificacion + "\n");
+                writer.write("Género: " + genero + "\n");
+                writer.write("Autor: " + autor + "\n");
+                writer.write("Número de páginas: " + numPaginas + "\n");
+                writer.write("Número de capítulos: " + numCapitulos + "\n");
+                writer.write("\n");
+            }catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            JOptionPane.showMessageDialog(null, "Se guardaron los datos exitosamente!");
+        });
+        JButton mostrarBoton = new JButton("Mostrar Información del Libro");
+        mostrarBoton.setBounds(200, 300, 160, 30);
+        panel.add(mostrarBoton);
+        mostrarBoton.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent event){
-                String titulo = titleField.getText();
-                String anio = yearField.getText();
-                String numIdentificacion = numField.getText();
-                String genero = genField.getText();
-                String autor = autorField.getText();
-                String numPaginas = pagField.getText();
-                String numCapitulos = capField.getText();
-                elementos.add(new Libro(titulo, anio, numIdentificacion, genero, autor, numPaginas, numCapitulos));
-                try(BufferedWriter writer = new BufferedWriter(new FileWriter("libros.txt", true))){
-                    writer.write("Título: " + titulo + "\n");
-                    writer.write("Año de publicación: " + anio + "\n");
-                    writer.write("Número de identificación: " + numIdentificacion + "\n");
-                    writer.write("Género: " + genero + "\n");
-                    writer.write("Autor: " + autor + "\n");
-                    writer.write("Número de páginas: " + numPaginas + "\n");
-                    writer.write("Número de capítulos: " + numCapitulos + "\n");
-                    writer.write("\n");
-                }catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-                JOptionPane.showMessageDialog(null, "Se guardaron los datos exitosamente!");
+            public void actionPerformed(ActionEvent e) {
+                mostrarDatosGuardados();
             }
         });
-        mostrarDatosGuardados();
     }
-
      private void mostrarDatosGuardados() {
         JFrame frame = new JFrame("Datos Guardados");
         frame.setSize(600, 400);
