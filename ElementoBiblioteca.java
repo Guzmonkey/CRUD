@@ -3,20 +3,23 @@ public class ElementoBiblioteca{
      * Declaracion de variables
      */
     protected String titulo;
-    protected int anioPublicacion;
-    protected int numIdentificacion;
+    protected String anioPublicacion;
+    protected String numIdentificacion;
     protected String genero;
     protected String autor;
     
     /*
      * Contructor de la clase
      */
-    public ElementoBiblioteca(String titulo, int anioPublicacion, int numIdentificacion, String genero, String autor) {
+    public ElementoBiblioteca(String titulo, String anioPublicacion, String numIdentificacion, String genero, String autor) {
         this.titulo = titulo;
         this.anioPublicacion = anioPublicacion;
         this.numIdentificacion = numIdentificacion;
         this.genero = genero;
         this.autor = autor;
+    }
+    public ElementoBiblioteca(){
+        
     }
     /*
      * Getters y setters
@@ -29,19 +32,19 @@ public class ElementoBiblioteca{
         this.titulo = titulo;
     }
 
-    public int getAnioPublicacion() {
+    public String getAnioPublicacion() {
         return anioPublicacion;
     }
 
-    public void setAnioPublicacion(int anioPublicacion) {
+    public void setAnioPublicacion(String anioPublicacion) {
         this.anioPublicacion = anioPublicacion;
     }
 
-    public int getNumIdentificacion() {
+    public String getNumIdentificacion() {
         return numIdentificacion;
     }
 
-    public void setNumIdentificacion(int numIdentificacion) {
+    public void setNumIdentificacion(String numIdentificacion) {
         this.numIdentificacion = numIdentificacion;
     }
 
@@ -61,5 +64,7 @@ public class ElementoBiblioteca{
         this.autor = autor;
     }
     
-    
+    public void mostrarInformacion(){
+        System.out.println("Titulo: " + titulo + "\nAño de publicacion: " + anioPublicacion + "\nNumero de identifiacion: " + numIdentificacion + "\nGenero: " + genero + "\nAutor: " + autor);
+    }
 }
