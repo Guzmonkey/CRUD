@@ -1,8 +1,13 @@
 import javax.swing.*;
-import javax.swing.plaf.basic.BasicArrowButton;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+
 public class CRUD {
    ArrayList<ElementoBiblioteca> elementos = new ArrayList<>();
 
@@ -59,15 +64,117 @@ public class CRUD {
 
     private void placeComponentsBooks(JPanel panel){
         panel.setLayout(null);
+        // Mostrar mensajes en el panel
+        // Mostrar mensaje para ingresar el titulo
         JLabel label = new JLabel("Ingresa el titulo: ");
         label.setBounds(20, 20, 150, 30);
         panel.add(label);
+        JTextField titleField = new JTextField(20);
+        titleField.setBounds(220, 20, 150, 30);
+        panel.add(titleField);
+        
+        // Mostrar mensaje para ingresar el año de publicacion
         JLabel label2 = new JLabel("Ingresa el año de publicación:");
-        label2.setBounds(20, 40, 200, 30);
+        label2.setBounds(20, 60, 200, 30);
         panel.add(label2);
+        JTextField yearField = new JTextField(20);
+        yearField.setBounds(220, 60, 200, 30);
+        panel.add(yearField);
+        
+        // Mostrar mensaje para ingresar el num de identifacion
         JLabel label3 = new JLabel("Ingresa el número de identifiación:");
-        label3.setBounds(20, 60, 200, 30);
+        label3.setBounds(20,100, 200, 30);
         panel.add(label3);
+        JTextField numField = new JTextField(20);
+        numField.setBounds(220, 100, 200, 30);
+        panel.add(numField);
+        
+        // Mostrar mensaje de ingresar el genero
+        JLabel label4 = new JLabel("Ingresa el género:");
+        label4.setBounds(20, 140, 200, 30);
+        panel.add(label4);
+        JTextField genField = new JTextField(20);
+        genField.setBounds(220, 140, 200, 30);    
+        panel.add(genField);
+        
+        // Mostrar mensaje para ingresar el autor
+        JLabel label5 = new JLabel("Ingresa el autor:");
+        label5.setBounds(20, 180, 200, 30);
+        panel.add(label5);
+        JTextField autorField = new JTextField(20);
+        autorField.setBounds(220, 180, 200, 30);
+        panel.add(autorField);
+        
+        // Mostrar mensaje para ingresar el numero de paginas
+        JLabel label6 = new JLabel("Ingresa el numero de páginas:");
+        label6.setBounds(20, 220, 200, 30);
+        panel.add(label6);
+        JTextField pagField = new JTextField(20);
+        pagField.setBounds(220, 220, 200, 30);
+        panel.add(pagField);
+
+        // Mostrar mensaje para ingresar el numero de capitulos
+        JLabel label7 = new JLabel("Ingresa el número de capitulos:");
+        label7.setBounds(20, 260, 200, 30);
+        panel.add(label7);
+        JTextField capField = new JTextField(20);
+        capField.setBounds(220, 260, 200, 30);
+        panel.add(capField);
+
+        // Agregar boton para que se guarde la información
+        JButton botonAgregar = new JButton("Agregar Libro");
+        botonAgregar.setBounds(20, 300, 160, 30);
+        panel.add(botonAgregar);
+        botonAgregar.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent event){
+                String titulo = titleField.getText();
+                String anio = yearField.getText();
+                String numIdentificacion = numField.getText();
+                String genero = genField.getText();
+                String autor = autorField.getText();
+                String numPaginas = pagField.getText();
+                String numCapitulos = capField.getText();
+                elementos.add(new Libro(titulo, anio, numIdentificacion, genero, autor, numPaginas, numCapitulos));
+                try(BufferedWriter writer = new BufferedWriter(new FileWriter("libros.txt", true))){
+                    writer.write("Título: " + titulo + "\n");
+                    writer.write("Año de publicación: " + anio + "\n");
+                    writer.write("Número de identificación: " + numIdentificacion + "\n");
+                    writer.write("Género: " + genero + "\n");
+                    writer.write("Autor: " + autor + "\n");
+                    writer.write("Número de páginas: " + numPaginas + "\n");
+                    writer.write("Número de capítulos: " + numCapitulos + "\n");
+                    writer.write("\n");
+                }catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+                JOptionPane.showMessageDialog(null, "Se guardaron los datos exitosamente!");
+            }
+        });
+        mostrarDatosGuardados();
+    }
+
+     private void mostrarDatosGuardados() {
+        JFrame frame = new JFrame("Datos Guardados");
+        frame.setSize(600, 400);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        JTextArea textArea = new JTextArea();
+        textArea.setEditable(false);
+        JScrollPane scrollPane = new JScrollPane(textArea);
+        frame.add(scrollPane);
+
+        try (BufferedReader reader = new BufferedReader(new FileReader("libros.txt"))) {
+            String line;
+            while ((line = reader.readLine()) != null) {
+                textArea.append(line + "\n");
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
     }
 }
+
 
