@@ -1,4 +1,3 @@
-
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -76,6 +75,19 @@ public class CRUD {
         JButton button3 = new JButton("DVDs");
         button3.setBounds(380, 60, 160, 30);
         panel.add(button3);
+        button3.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame frame2 = new JFrame("DVDs");
+                frame2.setSize(1000, 900);
+                frame2.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+                JPanel panel2 = new JPanel();
+                frame2.add(panel2);
+                placeComponentsDVDs(panel2);
+                frame2.setLocationRelativeTo(null);
+                frame2.setVisible(true);
+            }
+        });
 
     }
 
@@ -529,6 +541,7 @@ public class CRUD {
                 }else{
                     JOptionPane.showMessageDialog(null, "Elemento no encontrado.");
                 }
+                dvds--;
             }
         });
         
@@ -550,7 +563,7 @@ public class CRUD {
                     boolean found = false;
                     do{
                        if (elementos.get(count).getNumIdentificacion().equals(numIdentificacion)){
-                           elementos.set(count, new Revista(titulo, anio, numIdentificacion, genero, autor, duracion, idioma));
+                           elementos.set(count, new DVD(titulo, anio, numIdentificacion, genero, autor, duracion, idioma));
                            found = true;
                        }
                        count++;
@@ -601,7 +614,7 @@ public class CRUD {
        try(BufferedWriter writer = new BufferedWriter(new FileWriter(tipoElemento+".txt"))){
            int count = 0;
            do{
-               if (tipoElemento.equals("libro") && elementos.get(count) instanceof Libro){
+               if (tipoElemento.equals("libros") && elementos.get(count) instanceof Libro){
                    writer.write("Título: " + elementos.get(count).getTitulo() + "\n");
                    writer.write("Año de publicación: " + elementos.get(count).getAnioPublicacion() + "\n");
                    writer.write("Número de identificación: " + elementos.get(count).getNumIdentificacion() + "\n");
@@ -611,7 +624,7 @@ public class CRUD {
                    writer.write("Número de páginas: " + libro.getNumPaginas() + "\n");
                    writer.write("Número de capítulos: " + libro.getNumCapitulos() + "\n");
                    writer.write("\n");
-               }else if (tipoElemento.equals("revista") && elementos.get(count) instanceof Revista){
+               }else if (tipoElemento.equals("revistas") && elementos.get(count) instanceof Revista){
                    writer.write("Título: " + elementos.get(count).getTitulo() + "\n");
                    writer.write("Año de publicación: " + elementos.get(count).getAnioPublicacion() + "\n");
                    writer.write("Número de identificación: " + elementos.get(count).getNumIdentificacion() + "\n");
@@ -621,7 +634,7 @@ public class CRUD {
                    writer.write("Número de ejemplares: " + revista.getNumEjemplares() + "\n");
                    writer.write("Editores: " + revista.getEditores() + "\n");
                    writer.write("\n");
-               }else if (tipoElemento.equals("dvd") && elementos.get(count) instanceof DVD){
+               }else if (tipoElemento.equals("dvds") && elementos.get(count) instanceof DVD){
                    writer.write("Título: " + elementos.get(count).getTitulo() + "\n");
                    writer.write("Año de publicación: " + elementos.get(count).getAnioPublicacion() + "\n");
                    writer.write("Número de identificación: " + elementos.get(count).getNumIdentificacion() + "\n");
