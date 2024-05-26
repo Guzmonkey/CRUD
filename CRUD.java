@@ -3,52 +3,49 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 
 public class CRUD {
     ArrayList<ElementoBiblioteca> elementos = new ArrayList<>();
-    private int books = 0;
-    private int magazies = 0;
-    private int dvds = 0;
+    int books = 0;
 
     public CRUD() {
-        // Creacion de un jframe
+        // Creación de un JFrame
         JFrame frame = new JFrame("Biblioteca");
         frame.setSize(600, 150);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        // Creacion de un jpanel
+        // Creación de un JPanel
         JPanel panel = new JPanel();
         frame.add(panel);
         placeComponents(panel);
-
-        frame.setLocationRelativeTo(null); // Centramos la ventana en la pantalla
+        frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
 
     /*
-     * Método para mostrar botones en el interfaz
+     * Método para mostrar botones en la interfaz
      */
     private void placeComponents(JPanel panel) {
         panel.setLayout(null);
-        JLabel label = new JLabel("Elige una opcion: ");
+        // Creación del JLabel
+        JLabel label = new JLabel("Elige una opción: ");
         label.setBounds(25, 25, 200, 25);
         panel.add(label);
-        // Boton 1 para agregar libros
-        JButton button1 = new JButton("Libros");
-        button1.setBounds(20, 60, 160, 30);
-        panel.add(button1);
+
+        // Creación del primer botón
+        JButton botonLibros = new JButton("Libros");
+        botonLibros.setBounds(20, 60, 160, 30);
+        panel.add(botonLibros);
+
         // Agregar ActionListener a cada botón
-        button1.addActionListener(new ActionListener() {
+        botonLibros.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFrame frame2 = new JFrame("Libros");
-                frame2.setSize(1000, 900);
-                frame2.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+                frame2.setSize(600, 500);
                 JPanel panel2 = new JPanel();
                 frame2.add(panel2);
                 placeComponentsBooks(panel2);
@@ -56,44 +53,38 @@ public class CRUD {
                 frame2.setVisible(true);
             }
         });
-        // Boton 2 para agregar revistas
-        JButton button2 = new JButton("Revistas");
-        button2.setBounds(200, 60, 160, 30);
-        panel.add(button2);
-        // Boton 3 para agregar DVD
-        JButton button3 = new JButton("DVD\'s");
-        button3.setBounds(380, 60, 160, 30);
-        panel.add(button3);
     }
 
+    /*
+     * Método para mostrar interfaz de la opción libros
+     */
     private void placeComponentsBooks(JPanel panel) {
         panel.setLayout(null);
-        // Mostrar mensajes en el panel
-        // Mostrar mensaje para ingresar el titulo
-        JLabel label = new JLabel("Ingresa el titulo: ");
+        // Asignar título
+        JLabel label = new JLabel("Ingresa el título:");
         label.setBounds(20, 20, 150, 30);
         panel.add(label);
         JTextField titleField = new JTextField(20);
         titleField.setBounds(220, 20, 150, 30);
         panel.add(titleField);
 
-        // Mostrar mensaje para ingresar el año de publicacion
+        // Asignar año de publicación
         JLabel label2 = new JLabel("Ingresa el año de publicación:");
         label2.setBounds(20, 60, 200, 30);
         panel.add(label2);
-        JTextField yearField = new JTextField(20);
-        yearField.setBounds(220, 60, 200, 30);
-        panel.add(yearField);
+        JTextField anioField = new JTextField(20);
+        anioField.setBounds(220, 60, 200, 30);
+        panel.add(anioField);
 
-        // Mostrar mensaje para ingresar el num de identifacion
-        JLabel label3 = new JLabel("Ingresa el número de identifiación:");
+        // Asignar el id
+        JLabel label3 = new JLabel("Ingresa el número de identificación:");
         label3.setBounds(20, 100, 200, 30);
         panel.add(label3);
-        JTextField numField = new JTextField(20);
-        numField.setBounds(220, 100, 200, 30);
-        panel.add(numField);
+        JTextField idField = new JTextField(20);
+        idField.setBounds(220, 100, 200, 30);
+        panel.add(idField);
 
-        // Mostrar mensaje de ingresar el genero
+        // Asignar género
         JLabel label4 = new JLabel("Ingresa el género:");
         label4.setBounds(20, 140, 200, 30);
         panel.add(label4);
@@ -101,7 +92,7 @@ public class CRUD {
         genField.setBounds(220, 140, 200, 30);
         panel.add(genField);
 
-        // Mostrar mensaje para ingresar el autor
+        // Asignar autor
         JLabel label5 = new JLabel("Ingresa el autor:");
         label5.setBounds(20, 180, 200, 30);
         panel.add(label5);
@@ -109,105 +100,109 @@ public class CRUD {
         autorField.setBounds(220, 180, 200, 30);
         panel.add(autorField);
 
-        // Mostrar mensaje para ingresar el numero de paginas
-        JLabel label6 = new JLabel("Ingresa el numero de páginas:");
+        // Asignar número de páginas
+        JLabel label6 = new JLabel("Ingresa el número de páginas:");
         label6.setBounds(20, 220, 200, 30);
         panel.add(label6);
-        JTextField pagField = new JTextField(20);
-        pagField.setBounds(220, 220, 200, 30);
-        panel.add(pagField);
+        JTextField numPagField = new JTextField(20);
+        numPagField.setBounds(220, 220, 200, 30);
+        panel.add(numPagField);
 
-        // Mostrar mensaje para ingresar el numero de capitulos
-        JLabel label7 = new JLabel("Ingresa el número de capitulos:");
+        // Asignar número de capítulos
+        JLabel label7 = new JLabel("Ingresa el número de capítulos:");
         label7.setBounds(20, 260, 200, 30);
         panel.add(label7);
         JTextField capField = new JTextField(20);
         capField.setBounds(220, 260, 200, 30);
         panel.add(capField);
 
-        // Agregar boton para que se guarde la información
-        JButton botonAgregar = new JButton("Agregar Libro");
+        // Botón para agregar libro
+        JButton botonAgregar = new JButton("Agregar libro");
         botonAgregar.setBounds(20, 300, 160, 30);
         panel.add(botonAgregar);
         botonAgregar.addActionListener(event -> {
             String titulo = titleField.getText();
-            String anio = yearField.getText();
-            String numIdentificacion = numField.getText();
+            String anio = anioField.getText();
+            String numId = idField.getText();
             String genero = genField.getText();
             String autor = autorField.getText();
-            String numPaginas = pagField.getText();
+            String numPaginas = numPagField.getText();
             String numCapitulos = capField.getText();
-            elementos.add(new Libro(titulo, anio, numIdentificacion, genero, autor, numPaginas, numCapitulos));
-            // Guardar datos en un archivo de texto
-            if (books == 0){
-                try(BufferedWriter writer = new BufferedWriter(new FileWriter("libros.txt"))){
-                    writer.write("Título: " + titulo + "\n");
-                    writer.write("Año de publicación: " + anio + "\n");
-                    writer.write("Número de identificación: " + numIdentificacion + "\n");
-                    writer.write("Género: " + genero + "\n");
-                    writer.write("Autor: " + autor + "\n");
-                    writer.write("Número de páginas: " + numPaginas + "\n");
-                    writer.write("Número de capítulos: " + numCapitulos + "\n");
-                    writer.write("\n");
-                }catch (IOException ex) {
-                    ex.printStackTrace();
-                }
-            }else{
-                try(BufferedWriter writer = new BufferedWriter(new FileWriter("libros.txt", true))){
-                    writer.write("Título: " + titulo + "\n");
-                    writer.write("Año de publicación: " + anio + "\n");
-                    writer.write("Número de identificación: " + numIdentificacion + "\n");
-                    writer.write("Género: " + genero + "\n");
-                    writer.write("Autor: " + autor + "\n");
-                    writer.write("Número de páginas: " + numPaginas + "\n");
-                    writer.write("Número de capítulos: " + numCapitulos + "\n");
-                    writer.write("\n");
-                }catch (IOException ex) {
-                    ex.printStackTrace();
-                }
+            // Guardamos los datos en una clase
+            elementos.add(new Libro(titulo, anio, numId, genero, autor, numPaginas, numCapitulos));
+            // Escribimos los datos en un archivo de texto
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter("libros.txt", true))) {
+                writer.write("Título: " + titulo + "\n");
+                writer.write("Año de publicación: " + anio + "\n");
+                writer.write("Número de identificación: " + numId + "\n");
+                writer.write("Género: " + genero + "\n");
+                writer.write("Autor: " + autor + "\n");
+                writer.write("Número de páginas: " + numPaginas + "\n");
+                writer.write("Número de capítulos: " + numCapitulos + "\n");
+                writer.write("\n");
+            } catch (IOException ex) {
+                ex.printStackTrace();
             }
             books++;
-            JOptionPane.showMessageDialog(null, "Se guardaron los datos exitosamente!");
+            JOptionPane.showMessageDialog(null, "¡Se guardaron correctamente los datos!");
         });
-        
-        JButton mostrarBoton = new JButton("Mostrar Información del Libro");
-        mostrarBoton.setBounds(200, 300, 200, 30);
+
+        // Botón para mostrar información
+        JButton mostrarBoton = new JButton("Mostrar información");
+        mostrarBoton.setBounds(200, 300, 160, 30);
         panel.add(mostrarBoton);
         mostrarBoton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                if (books == 0) {
-                    JOptionPane.showMessageDialog(null, "No hay datos guardados!");
-                } else {
-                    mostrarDatosGuardados();
-                }
+                mostrarLibrosGuardados();
             }
         });
 
-        JButton botonEliminar = new JButton("Eliminar Información");
-        botonEliminar.setBounds(20, 350, 160, 30);
-        panel.add(botonEliminar);
-        botonEliminar.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e){
-                String numId = numField.getText();
-                JPanel panel = new JPanel();
-                
-                if(buscarElemento(numId)){
-
-                }
+        // Botón para eliminar información
+        JButton eliminarBoton = new JButton("Eliminar");
+        eliminarBoton.setBounds(20, 340, 160, 30);
+        panel.add(eliminarBoton);
+        eliminarBoton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                JFrame frameEliminar = new JFrame("Eliminar libros");
+                frameEliminar.setSize(400, 300);
+                frameEliminar.setVisible(true);
+                JPanel panelEliminar = new JPanel();
+                frameEliminar.add(panelEliminar);
+                panelEliminar.setLayout(null);
+                JLabel labelEliminar = new JLabel("Ingresa el número de identifiación: ");
+                labelEliminar.setBounds(5, 0, 200, 30);
+                panelEliminar.add(labelEliminar);
+                JTextField textEliminar = new JTextField(20);
+                textEliminar.setBounds(5, 30, 200, 30);
+                panelEliminar.add(textEliminar);
+                JButton buscarLibro = new JButton("Buscar");
+                buscarLibro.setBounds(5, 70, 100, 30);
+                panelEliminar.add(buscarLibro);
+                buscarLibro.addActionListener(new ActionListener() {
+                    public void actionPerformed(ActionEvent e){
+                        String id = idField.getText();
+                        eliminarInformacionLibros(id);
+                    }
+                });
+                frameEliminar.setLocationRelativeTo(null);
             }
         });
     }
 
-    private void mostrarDatosGuardados() {
-        JFrame frame = new JFrame("Datos Guardados");
+    /*
+     * Método para mostrar todos los libros guardados
+     */
+    public void mostrarLibrosGuardados() {
+        JFrame frame = new JFrame("Libros guardados");
         frame.setSize(600, 400);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         JTextArea textArea = new JTextArea();
         textArea.setEditable(false);
         JScrollPane scrollPane = new JScrollPane(textArea);
         frame.add(scrollPane);
-        // Mostrar los datos del archivo de texto
+
         try (BufferedReader reader = new BufferedReader(new FileReader("libros.txt"))) {
             String line;
             while ((line = reader.readLine()) != null) {
@@ -216,42 +211,64 @@ public class CRUD {
         } catch (IOException ex) {
             ex.printStackTrace();
         }
-
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
     }
-    
-    private boolean buscarElemento(String numId){
-        boolean found = false;
-        int count = 0;
 
-        if(!elementos.isEmpty()){
-            do{
-                if(elementos.get(count).getNumIdentificacion().equals(numId)){
+    /*
+     * Método para buscar los elementos
+     */
+    public boolean buscarInformacion(String id) {
+        // Declaración de variables
+        int count = 0;
+        boolean found = false;
+
+        if (!elementos.isEmpty()) {
+            do {
+                if (elementos.get(count).getNumIdentificacion().equals(id)) {
                     found = true;
                 }
                 count++;
-            }while(found == false && count < elementos.size());
+            } while (!found && count < elementos.size());
         }
         return found;
     }
 
-   /*
-    * Metodo para eliminar elementos del archivo
-    */
-    private void borrarElementos(String numId){
-        boolean found = false;
-        int count = 0;
+    /*
+     * Método para eliminar información
+     */
 
-        if(!elementos.isEmpty()){
-            do{
-                if(elementos.get(count).getNumIdentificacion().equals(numId)){
-                    found = true;
-                    elementos.remove(count);
-                    break;
-                }
-                count++;
-            }while(found == false);
+     public void eliminarInformacionLibros(String id) {
+        boolean encontrado = false;
+        for (ElementoBiblioteca elemento : elementos) {
+            if (elemento.getNumIdentificacion().equals(id)) {
+                elementos.remove(elemento);
+                encontrado = true;
+                break; // Se detiene después de eliminar el primer libro con el ID dado
+            }
         }
-    }
+    
+        if (encontrado) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter("libros.txt"))) {
+                for (ElementoBiblioteca elemento : elementos) {
+                    if (elemento instanceof Libro) {
+                        Libro libro = (Libro) elemento;
+                        writer.write("Título: " + libro.getTitulo() + "\n");
+                        writer.write("Año de publicación: " + libro.getAnioPublicacion() + "\n");
+                        writer.write("Número de identificación: " + libro.getNumIdentificacion() + "\n");
+                        writer.write("Género: " + libro.getGenero() + "\n");
+                        writer.write("Autor: " + libro.getAutor() + "\n");
+                        writer.write("Número de páginas: " + libro.getNumPaginas() + "\n");
+                        writer.write("Número de capítulos: " + libro.getNumCapitulos() + "\n");
+                        writer.write("\n");
+                    }
+                }
+                JOptionPane.showMessageDialog(null, "Se eliminó correctamente el libro con ID: " + id);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "No se encontró ningún libro con el ID: " + id);
+        }
+    }    
 }
