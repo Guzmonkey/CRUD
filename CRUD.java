@@ -45,7 +45,7 @@ public class CRUD {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFrame frame2 = new JFrame("Libros");
-                frame2.setSize(600, 500);
+                frame2.setSize(800, 600);
                 JPanel panel2 = new JPanel();
                 frame2.add(panel2);
                 placeComponentsBooks(panel2);
@@ -131,20 +131,36 @@ public class CRUD {
             // Guardamos los datos en una clase
             elementos.add(new Libro(titulo, anio, numId, genero, autor, numPaginas, numCapitulos));
             // Escribimos los datos en un archivo de texto
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter("libros.txt", true))) {
-                writer.write("Título: " + titulo + "\n");
-                writer.write("Año de publicación: " + anio + "\n");
-                writer.write("Número de identificación: " + numId + "\n");
-                writer.write("Género: " + genero + "\n");
-                writer.write("Autor: " + autor + "\n");
-                writer.write("Número de páginas: " + numPaginas + "\n");
-                writer.write("Número de capítulos: " + numCapitulos + "\n");
-                writer.write("\n");
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
+            if (books == 0){
+                try(BufferedWriter writer = new BufferedWriter(new FileWriter("libros.txt", true))){
+                    writer.write("Título: " + titulo + "\n");
+                    writer.write("Año de publicación: " + anio + "\n");
+                    writer.write("Número de identificación: " + numId + "\n");
+                    writer.write("Género: " + genero + "\n");
+                    writer.write("Autor: " + autor + "\n");
+                    writer.write("Número de páginas: " + numPaginas + "\n");
+                    writer.write("Número de capítulos: " + numCapitulos + "\n");
+                    writer.write("\n");
+                    JOptionPane.showMessageDialog(null, "¡Se guardaron correctamente los datos!");
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                }
+            }else{
+                try(BufferedWriter writer = new BufferedWriter(new FileWriter("libros.txt", true))){
+                    writer.write("Título: " + titulo + "\n");
+                    writer.write("Año de publicación: " + anio + "\n");
+                    writer.write("Número de identificación: " + numId + "\n");
+                    writer.write("Género: " + genero + "\n");
+                    writer.write("Autor: " + autor + "\n");
+                    writer.write("Número de páginas: " + numPaginas + "\n");
+                    writer.write("Número de capítulos: " + numCapitulos + "\n");
+                    writer.write("\n");
+                }catch (IOException ex) {
+                    ex.printStackTrace();
+                }
             books++;
             JOptionPane.showMessageDialog(null, "¡Se guardaron correctamente los datos!");
+            }
         });
 
         // Botón para mostrar información
@@ -158,35 +174,23 @@ public class CRUD {
             }
         });
 
-        // Botón para eliminar información
-        JButton eliminarBoton = new JButton("Eliminar");
-        eliminarBoton.setBounds(20, 340, 160, 30);
+        // Botón para eliminar libros
+        JTextField eliminarLibros = new JTextField();
+        eliminarLibros.setBounds(20, 380, 160, 30);
+        panel.add(eliminarLibros);
+        JButton eliminarBoton = new JButton("Eliminar libro");
+        eliminarBoton.setBounds(20, 420, 160, 30);
         panel.add(eliminarBoton);
         eliminarBoton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFrame frameEliminar = new JFrame("Eliminar libros");
-                frameEliminar.setSize(400, 300);
-                frameEliminar.setVisible(true);
-                JPanel panelEliminar = new JPanel();
-                frameEliminar.add(panelEliminar);
-                panelEliminar.setLayout(null);
-                JLabel labelEliminar = new JLabel("Ingresa el número de identifiación: ");
-                labelEliminar.setBounds(5, 0, 200, 30);
-                panelEliminar.add(labelEliminar);
-                JTextField textEliminar = new JTextField(20);
-                textEliminar.setBounds(5, 30, 200, 30);
-                panelEliminar.add(textEliminar);
-                JButton buscarLibro = new JButton("Buscar");
-                buscarLibro.setBounds(5, 70, 100, 30);
-                panelEliminar.add(buscarLibro);
-                buscarLibro.addActionListener(new ActionListener() {
-                    public void actionPerformed(ActionEvent e){
-                        String id = idField.getText();
-                        eliminarInformacionLibros(id);
-                    }
-                });
-                frameEliminar.setLocationRelativeTo(null);
+            public void actionPerformed(ActionEvent e){
+                String id = idField.getText();
+                if(buscarInformacion(id)){
+                    eliminarElemento(id, "libro");
+                    JOptionPane.showMessageDialog(null, "Se eliminó correctamente!");
+                }else{
+                    JOptionPane.showMessageDialog(null, "No se encontró ningún libro");
+                }
+                books--;
             }
         });
     }
@@ -194,7 +198,7 @@ public class CRUD {
     /*
      * Método para mostrar todos los libros guardados
      */
-    public void mostrarLibrosGuardados() {
+    private void mostrarLibrosGuardados() {
         JFrame frame = new JFrame("Libros guardados");
         frame.setSize(600, 400);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -218,7 +222,7 @@ public class CRUD {
     /*
      * Método para buscar los elementos
      */
-    public boolean buscarInformacion(String id) {
+    private boolean buscarInformacion(String id) {
         // Declaración de variables
         int count = 0;
         boolean found = false;
@@ -237,38 +241,58 @@ public class CRUD {
     /*
      * Método para eliminar información
      */
-
-     public void eliminarInformacionLibros(String id) {
-        boolean encontrado = false;
-        for (ElementoBiblioteca elemento : elementos) {
-            if (elemento.getNumIdentificacion().equals(id)) {
-                elementos.remove(elemento);
-                encontrado = true;
-                break; // Se detiene después de eliminar el primer libro con el ID dado
-            }
-        }
-    
-        if (encontrado) {
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter("libros.txt"))) {
-                for (ElementoBiblioteca elemento : elementos) {
-                    if (elemento instanceof Libro) {
-                        Libro libro = (Libro) elemento;
-                        writer.write("Título: " + libro.getTitulo() + "\n");
-                        writer.write("Año de publicación: " + libro.getAnioPublicacion() + "\n");
-                        writer.write("Número de identificación: " + libro.getNumIdentificacion() + "\n");
-                        writer.write("Género: " + libro.getGenero() + "\n");
-                        writer.write("Autor: " + libro.getAutor() + "\n");
-                        writer.write("Número de páginas: " + libro.getNumPaginas() + "\n");
-                        writer.write("Número de capítulos: " + libro.getNumCapitulos() + "\n");
-                        writer.write("\n");
-                    }
+    private void eliminarElemento(String numId){
+        int count = 0;
+        boolean found = false;
+        if(!elementos.isEmpty()){
+            do{
+                if(elementos.get(count).getNumIdentificacion().equals(numId)){
+                    found = true; 
+                    elementos.remove(count);
+                    break;
                 }
-                JOptionPane.showMessageDialog(null, "Se eliminó correctamente el libro con ID: " + id);
-            } catch (IOException ex) {
-                ex.printStackTrace();
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "No se encontró ningún libro con el ID: " + id);
+                count++;
+            }while(found == false);
         }
-    }    
+    }
+
+    private void eliminarElemento(String numId, String elemento) {
+        switch (elemento) {
+            case "libro":
+                int count = 0;
+                do {
+                    if (elementos.get(count).getNumIdentificacion().equals(numId)) {
+                        elementos.remove(count);
+                        buscarInformacion(numId);
+                        actualizarDatos("libros"); // Cambio de "libros" a "libro.txt" en esta línea
+                        break;
+                    }
+                    count++;
+                } while (count < elementos.size());
+                break;
+            default:
+                break;
+        }
+    }
+    
+
+    private void actualizarDatos(String elemento) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter("libros.txt"))) {
+            for (ElementoBiblioteca elementoBiblioteca : elementos) {
+                if (elementoBiblioteca instanceof Libro) {
+                    Libro libro = (Libro) elementoBiblioteca;
+                    writer.write("Título: " + libro.getTitulo() + "\n");
+                    writer.write("Año de publicación: " + libro.getAnioPublicacion() + "\n");
+                    writer.write("Número de identificación: " + libro.getNumIdentificacion() + "\n");
+                    writer.write("Género: " + libro.getGenero() + "\n");
+                    writer.write("Autor: " + libro.getAutor() + "\n");
+                    writer.write("Número de páginas: " + libro.getNumPaginas() + "\n");
+                    writer.write("Número de capítulos: " + libro.getNumCapitulos() + "\n");
+                    writer.write("\n");
+                }
+            }
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
 }
