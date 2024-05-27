@@ -1,3 +1,5 @@
+package uabc.biblioteca;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -95,15 +97,15 @@ public class CRUD {
         panel.setLayout(null);
         // Mostrar mensajes en el panel
         // Mostrar mensaje para ingresar el titulo
-        JLabel label = new JLabel("Ingresa el titulo: ");
-        label.setBounds(20, 20, 150, 30);
+        JLabel label = new JLabel("Ingresar titulo: ");
+        label.setBounds(20, 20, 200, 30);
         panel.add(label);
         JTextField titleField = new JTextField(20);
-        titleField.setBounds(220, 20, 150, 30);
+        titleField.setBounds(220, 20, 200, 30);
         panel.add(titleField);
         
         // Mostrar mensaje para ingresar el año de publicacion
-        JLabel label2 = new JLabel("Ingresa el año de publicación:");
+        JLabel label2 = new JLabel("Ingresar año de publicación:");
         label2.setBounds(20, 60, 200, 30);
         panel.add(label2);
         JTextField yearField = new JTextField(20);
@@ -111,7 +113,7 @@ public class CRUD {
         panel.add(yearField);
         
         // Mostrar mensaje para ingresar el num de identifacion
-        JLabel label3 = new JLabel("Ingresa el número de identifiación:");
+        JLabel label3 = new JLabel("Ingresar número de identifiación:");
         label3.setBounds(20,100, 200, 30);
         panel.add(label3);
         JTextField numField = new JTextField(20);
@@ -119,7 +121,7 @@ public class CRUD {
         panel.add(numField);
         
         // Mostrar mensaje de ingresar el genero
-        JLabel label4 = new JLabel("Ingresa el género:");
+        JLabel label4 = new JLabel("Ingresar género:");
         label4.setBounds(20, 140, 200, 30);
         panel.add(label4);
         JTextField genField = new JTextField(20);
@@ -127,7 +129,7 @@ public class CRUD {
         panel.add(genField);
         
         // Mostrar mensaje para ingresar el autor
-        JLabel label5 = new JLabel("Ingresa el autor:");
+        JLabel label5 = new JLabel("Ingresar autor:");
         label5.setBounds(20, 180, 200, 30);
         panel.add(label5);
         JTextField autorField = new JTextField(20);
@@ -135,7 +137,7 @@ public class CRUD {
         panel.add(autorField);
         
         // Mostrar mensaje para ingresar el numero de paginas
-        JLabel label6 = new JLabel("Ingresa el numero de páginas:");
+        JLabel label6 = new JLabel("Ingresar numero de páginas:");
         label6.setBounds(20, 220, 200, 30);
         panel.add(label6);
         JTextField pagField = new JTextField(20);
@@ -143,12 +145,20 @@ public class CRUD {
         panel.add(pagField);
 
         // Mostrar mensaje para ingresar el numero de capitulos
-        JLabel label7 = new JLabel("Ingresa el número de capitulos:");
+        JLabel label7 = new JLabel("Ingresar número de capitulos:");
         label7.setBounds(20, 260, 200, 30);
         panel.add(label7);
         JTextField capField = new JTextField(20);
         capField.setBounds(220, 260, 200, 30);
         panel.add(capField);
+        
+        // Mostrar mensaje para ingresar el num de identifacion
+        JLabel label8 = new JLabel("Ingresar número de identificación:");
+        label8.setBounds(20, 400, 200, 30);
+        panel.add(label8);
+        JTextField numeField = new JTextField(20);
+        numeField.setBounds(220, 400, 200, 30);
+        panel.add(numeField);
 
         // Agregar boton para que se guarde la información
         JButton botonAgregar = new JButton("Agregar Libro");
@@ -190,12 +200,20 @@ public class CRUD {
                     ex.printStackTrace();
                 }
             }
+            titleField.setText(null);
+            yearField.setText(null);
+            numField.setText(null);
+            genField.setText(null);
+            autorField.setText(null);
+            pagField.setText(null);
+            capField.setText(null);
+            numeField.setText(null);
             books++;
             JOptionPane.showMessageDialog(null, "Se guardaron los datos exitosamente!");
         });
         
         JButton mostrarBoton = new JButton("Mostrar Información");
-        mostrarBoton.setBounds(200, 300, 160, 30);
+        mostrarBoton.setBounds(260, 300, 160, 30);
         panel.add(mostrarBoton);
         mostrarBoton.addActionListener(new ActionListener() {
             @Override
@@ -205,11 +223,19 @@ public class CRUD {
         });
         
         JButton botonEliminar = new JButton("Eliminar");
-        botonEliminar.setBounds(20, 350, 160, 30);
+        botonEliminar.setBounds(20, 340, 160, 30);
         panel.add(botonEliminar);
         botonEliminar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String numId = numField.getText();
+                titleField.setText(null);
+                yearField.setText(null);
+                numField.setText(null);
+                genField.setText(null);
+                autorField.setText(null);
+                pagField.setText(null);
+                capField.setText(null);
+                numeField.setText(null);
                 if (buscarElemento(numId) == true){
                     eliminarElemento(numId, "libro");
                     actualizarDatos("libros");
@@ -221,8 +247,35 @@ public class CRUD {
             }
         });
         
+        JButton botonBuscar = new JButton("Buscar");
+        botonBuscar.setBounds(20, 440, 160, 30);
+        panel.add(botonBuscar);
+        botonBuscar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                String numId = numeField.getText();
+                if (buscarElemento(numId) == true){
+                    int count = 0;
+                    boolean found = false;
+                    do{
+                        if (elementos.get(count).getNumIdentificacion().equals(numId)){
+                            titleField.setText(elementos.get(count).getTitulo());
+                            yearField.setText(elementos.get(count).getAnioPublicacion());
+                            numField.setText(elementos.get(count).getNumIdentificacion());
+                            genField.setText(elementos.get(count).getGenero());
+                            autorField.setText(elementos.get(count).getAutor());
+                            Libro libro = (Libro) elementos.get(count);
+                            pagField.setText(libro.getNumPaginas());
+                            capField.setText(libro.getTitulo());
+                            found = true;
+                        }
+                        count++;
+                    }while (found == false && count<elementos.size());
+                }
+            }
+        });
+        
         JButton botonEditar = new JButton("Editar");
-        botonEditar.setBounds(200, 350, 160, 30);
+        botonEditar.setBounds(260, 340, 160, 30);
         panel.add(botonEditar);
         botonEditar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -245,6 +298,14 @@ public class CRUD {
                        count++;
                     }while(found==false && count<elementos.size());
                     actualizarDatos("libros");
+                    titleField.setText(null);
+                    yearField.setText(null);
+                    numField.setText(null);
+                    genField.setText(null);
+                    autorField.setText(null);
+                    pagField.setText(null);
+                    capField.setText(null);
+                    numeField.setText(null);
                     JOptionPane.showMessageDialog(null, "Elemento editado exitosamente.");
                 }else{
                     JOptionPane.showMessageDialog(null, "Elemento no encontrado.");
@@ -257,7 +318,7 @@ public class CRUD {
         panel.setLayout(null);
         // Mostrar mensajes en el panel
         // Mostrar mensaje para ingresar el titulo
-        JLabel label = new JLabel("Ingresa el titulo: ");
+        JLabel label = new JLabel("Ingresar titulo: ");
         label.setBounds(20, 20, 150, 30);
         panel.add(label);
         JTextField titleField = new JTextField(20);
@@ -265,7 +326,7 @@ public class CRUD {
         panel.add(titleField);
         
         // Mostrar mensaje para ingresar el año de publicacion
-        JLabel label2 = new JLabel("Ingresa el año de publicación:");
+        JLabel label2 = new JLabel("Ingresar año de publicación:");
         label2.setBounds(20, 60, 200, 30);
         panel.add(label2);
         JTextField yearField = new JTextField(20);
@@ -273,7 +334,7 @@ public class CRUD {
         panel.add(yearField);
         
         // Mostrar mensaje para ingresar el num de identifacion
-        JLabel label3 = new JLabel("Ingresa el número de identifiación:");
+        JLabel label3 = new JLabel("Ingresar número de identificación:");
         label3.setBounds(20,100, 200, 30);
         panel.add(label3);
         JTextField numField = new JTextField(20);
@@ -281,7 +342,7 @@ public class CRUD {
         panel.add(numField);
         
         // Mostrar mensaje de ingresar el genero
-        JLabel label4 = new JLabel("Ingresa el género:");
+        JLabel label4 = new JLabel("Ingresar género:");
         label4.setBounds(20, 140, 200, 30);
         panel.add(label4);
         JTextField genField = new JTextField(20);
@@ -289,7 +350,7 @@ public class CRUD {
         panel.add(genField);
         
         // Mostrar mensaje para ingresar el autor
-        JLabel label5 = new JLabel("Ingresa el autor:");
+        JLabel label5 = new JLabel("Ingresar autor:");
         label5.setBounds(20, 180, 200, 30);
         panel.add(label5);
         JTextField autorField = new JTextField(20);
@@ -297,7 +358,7 @@ public class CRUD {
         panel.add(autorField);
         
         // Mostrar mensaje para ingresar el numero de paginas
-        JLabel label6 = new JLabel("Ingresa el numero de ejemplares:");
+        JLabel label6 = new JLabel("Ingresar numero de ejemplares:");
         label6.setBounds(20, 220, 200, 30);
         panel.add(label6);
         JTextField ejempField = new JTextField(20);
@@ -305,12 +366,20 @@ public class CRUD {
         panel.add(ejempField);
 
         // Mostrar mensaje para ingresar el numero de capitulos
-        JLabel label7 = new JLabel("Ingresa los editores:");
+        JLabel label7 = new JLabel("Ingresar editores:");
         label7.setBounds(20, 260, 200, 30);
         panel.add(label7);
         JTextField editField = new JTextField(20);
         editField.setBounds(220, 260, 200, 30);
         panel.add(editField);
+        
+        // Mostrar mensaje para ingresar el num de identifacion
+        JLabel label8 = new JLabel("Ingresar número de identificación:");
+        label8.setBounds(20, 400, 200, 30);
+        panel.add(label8);
+        JTextField numeField = new JTextField(20);
+        numeField.setBounds(220, 400, 200, 30);
+        panel.add(numeField);
 
         // Agregar boton para que se guarde la información
         JButton botonAgregar = new JButton("Agregar Revista");
@@ -352,6 +421,14 @@ public class CRUD {
                     ex.printStackTrace();
                 }
             }
+            titleField.setText(null);
+            yearField.setText(null);
+            numField.setText(null);
+            genField.setText(null);
+            autorField.setText(null);
+            ejempField.setText(null);
+            editField.setText(null);
+            numeField.setText(null);
             magazines++;
             JOptionPane.showMessageDialog(null, "Se guardaron los datos exitosamente!");
         });
@@ -367,11 +444,19 @@ public class CRUD {
         });
         
         JButton botonEliminar = new JButton("Eliminar");
-        botonEliminar.setBounds(20, 350, 160, 30);
+        botonEliminar.setBounds(20, 320, 160, 30);
         panel.add(botonEliminar);
         botonEliminar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String numId = numField.getText();
+                titleField.setText(null);
+                yearField.setText(null);
+                numField.setText(null);
+                genField.setText(null);
+                autorField.setText(null);
+                ejempField.setText(null);
+                editField.setText(null);
+                numeField.setText(null);
                 if (buscarElemento(numId) == true){
                     eliminarElemento(numId, "revista");
                     actualizarDatos("revistas");
@@ -383,8 +468,35 @@ public class CRUD {
             }
         });
         
+        JButton botonBuscar = new JButton("Buscar");
+        botonBuscar.setBounds(20, 440, 160, 30);
+        panel.add(botonBuscar);
+        botonBuscar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                String numId = numeField.getText();
+                if (buscarElemento(numId) == true){
+                    int count = 0;
+                    boolean found = false;
+                    do{
+                        if (elementos.get(count).getNumIdentificacion().equals(numId)){
+                            titleField.setText(elementos.get(count).getTitulo());
+                            yearField.setText(elementos.get(count).getAnioPublicacion());
+                            numField.setText(elementos.get(count).getNumIdentificacion());
+                            genField.setText(elementos.get(count).getGenero());
+                            autorField.setText(elementos.get(count).getAutor());
+                            Revista revista = (Revista) elementos.get(count);
+                            ejempField.setText(revista.getNumEjemplares());
+                            editField.setText(revista.getEditores());
+                            found = true;
+                        }
+                        count++;
+                    }while (found == false && count<elementos.size());
+                }
+            }
+        });
+        
         JButton botonEditar = new JButton("Editar");
-        botonEditar.setBounds(200, 350, 160, 30);
+        botonEditar.setBounds(200, 320, 160, 30);
         panel.add(botonEditar);
         botonEditar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -407,6 +519,14 @@ public class CRUD {
                        count++;
                     }while(found==false && count<elementos.size());
                     actualizarDatos("revistas");
+                    titleField.setText(null);
+                    yearField.setText(null);
+                    numField.setText(null);
+                    genField.setText(null);
+                    autorField.setText(null);
+                    ejempField.setText(null);
+                    editField.setText(null);
+                    numeField.setText(null);
                     JOptionPane.showMessageDialog(null, "Elemento editado exitosamente.");
                 }else{
                     JOptionPane.showMessageDialog(null, "Elemento no encontrado.");
@@ -419,7 +539,7 @@ public class CRUD {
         panel.setLayout(null);
         // Mostrar mensajes en el panel
         // Mostrar mensaje para ingresar el titulo
-        JLabel label = new JLabel("Ingresa el titulo: ");
+        JLabel label = new JLabel("Ingresar titulo: ");
         label.setBounds(20, 20, 150, 30);
         panel.add(label);
         JTextField titleField = new JTextField(20);
@@ -427,7 +547,7 @@ public class CRUD {
         panel.add(titleField);
         
         // Mostrar mensaje para ingresar el año de publicacion
-        JLabel label2 = new JLabel("Ingresa el año de publicación:");
+        JLabel label2 = new JLabel("Ingresar año de publicación:");
         label2.setBounds(20, 60, 200, 30);
         panel.add(label2);
         JTextField yearField = new JTextField(20);
@@ -435,7 +555,7 @@ public class CRUD {
         panel.add(yearField);
         
         // Mostrar mensaje para ingresar el num de identifacion
-        JLabel label3 = new JLabel("Ingresa el número de identifiación:");
+        JLabel label3 = new JLabel("Ingresar número de identifiación:");
         label3.setBounds(20,100, 200, 30);
         panel.add(label3);
         JTextField numField = new JTextField(20);
@@ -443,7 +563,7 @@ public class CRUD {
         panel.add(numField);
         
         // Mostrar mensaje de ingresar el genero
-        JLabel label4 = new JLabel("Ingresa el género:");
+        JLabel label4 = new JLabel("Ingresar género:");
         label4.setBounds(20, 140, 200, 30);
         panel.add(label4);
         JTextField genField = new JTextField(20);
@@ -451,7 +571,7 @@ public class CRUD {
         panel.add(genField);
         
         // Mostrar mensaje para ingresar el autor
-        JLabel label5 = new JLabel("Ingresa el autor:");
+        JLabel label5 = new JLabel("Ingresar autor:");
         label5.setBounds(20, 180, 200, 30);
         panel.add(label5);
         JTextField autorField = new JTextField(20);
@@ -459,7 +579,7 @@ public class CRUD {
         panel.add(autorField);
         
         // Mostrar mensaje para ingresar el numero de paginas
-        JLabel label6 = new JLabel("Ingresa la duración:");
+        JLabel label6 = new JLabel("Ingresar duración:");
         label6.setBounds(20, 220, 200, 30);
         panel.add(label6);
         JTextField durField = new JTextField(20);
@@ -467,12 +587,20 @@ public class CRUD {
         panel.add(durField);
 
         // Mostrar mensaje para ingresar el numero de capitulos
-        JLabel label7 = new JLabel("Ingresa el idioma:");
+        JLabel label7 = new JLabel("Ingresar idioma:");
         label7.setBounds(20, 260, 200, 30);
         panel.add(label7);
         JTextField idiomField = new JTextField(20);
         idiomField.setBounds(220, 260, 200, 30);
         panel.add(idiomField);
+        
+        // Mostrar mensaje para ingresar el num de identifacion
+        JLabel label8 = new JLabel("Ingresar número de identificación:");
+        label8.setBounds(20, 400, 200, 30);
+        panel.add(label8);
+        JTextField numeField = new JTextField(20);
+        numeField.setBounds(220, 400, 200, 30);
+        panel.add(numeField);
 
         // Agregar boton para que se guarde la información
         JButton botonAgregar = new JButton("Agregar DVD");
@@ -514,6 +642,14 @@ public class CRUD {
                     ex.printStackTrace();
                 }
             }
+            titleField.setText(null);
+            yearField.setText(null);
+            numField.setText(null);
+            genField.setText(null);
+            autorField.setText(null);
+            durField.setText(null);
+            idiomField.setText(null);
+            numeField.setText(null);
             dvds++;
             JOptionPane.showMessageDialog(null, "Se guardaron los datos exitosamente!");
         });
@@ -534,6 +670,14 @@ public class CRUD {
         botonEliminar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 String numId = numField.getText();
+                titleField.setText(null);
+                yearField.setText(null);
+                numField.setText(null);
+                genField.setText(null);
+                autorField.setText(null);
+                durField.setText(null);
+                idiomField.setText(null);
+                numeField.setText(null);
                 if (buscarElemento(numId) == true){
                     eliminarElemento(numId, "dvd");
                     actualizarDatos("dvds");
@@ -542,6 +686,33 @@ public class CRUD {
                     JOptionPane.showMessageDialog(null, "Elemento no encontrado.");
                 }
                 dvds--;
+            }
+        });
+        
+        JButton botonBuscar = new JButton("Buscar");
+        botonBuscar.setBounds(20, 440, 160, 30);
+        panel.add(botonBuscar);
+        botonBuscar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e){
+                String numId = numeField.getText();
+                if (buscarElemento(numId) == true){
+                    int count = 0;
+                    boolean found = false;
+                    do{
+                        if (elementos.get(count).getNumIdentificacion().equals(numId)){
+                            titleField.setText(elementos.get(count).getTitulo());
+                            yearField.setText(elementos.get(count).getAnioPublicacion());
+                            numField.setText(elementos.get(count).getNumIdentificacion());
+                            genField.setText(elementos.get(count).getGenero());
+                            autorField.setText(elementos.get(count).getAutor());
+                            DVD dvd = (DVD) elementos.get(count);
+                            durField.setText(dvd.getDuracion());
+                            idiomField.setText(dvd.getIdioma());
+                            found = true;
+                        }
+                        count++;
+                    }while (found == false && count<elementos.size());
+                }
             }
         });
         
@@ -569,6 +740,14 @@ public class CRUD {
                        count++;
                     }while(found==false && count<elementos.size());
                     actualizarDatos("dvds");
+                    titleField.setText(null);
+                    yearField.setText(null);
+                    numField.setText(null);
+                    genField.setText(null);
+                    autorField.setText(null);
+                    durField.setText(null);
+                    idiomField.setText(null);
+                    numeField.setText(null);
                     JOptionPane.showMessageDialog(null, "Elemento editado exitosamente.");
                 }else{
                     JOptionPane.showMessageDialog(null, "Elemento no encontrado.");
